@@ -1,5 +1,6 @@
 # Scanning
-> how to use >
+> how to use
+
 let twoDimension = TwoDimensionViewController()
 twoDimension.createBackBtn()
 twoDimension.suncess { (twoDimensionViewController, typeNum) in
