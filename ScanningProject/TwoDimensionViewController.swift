@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import AVFoundation
 
 typealias TwoDimensionViewControllerCancelCallback=(twoDimensionViewController: TwoDimensionViewController) -> Void
 typealias TwoDimensionViewControllerSuncessCallback=(twoDimensionViewController: TwoDimensionViewController, typeNum: NSString) -> Void
 typealias TwoDimensionViewControllerFailCallback=(twoDimensionViewController: TwoDimensionViewController) -> Void
 
-class TwoDimensionViewController: BaseViewController {
+class TwoDimensionViewController: UIViewController {
     
     var SYQRCodeCancelBlock = TwoDimensionViewControllerCancelCallback?()
     var SYQRCodeSuncessBlock = TwoDimensionViewControllerSuncessCallback?()
@@ -25,8 +26,6 @@ class TwoDimensionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.setupNavigation()
         
         self.initAVCaptureDevice()
         
@@ -40,18 +39,6 @@ class TwoDimensionViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
-        
-        self.navigationController?.navigationBar.lt_setBackgroundColor(UIColor.whiteColor())
-    }
-    
-    //MARK:设置导航栏
-    private func setupNavigation() {
-        
-        self.titleViewColor = UIColor(hexString: "434343")
-        self.setupTitleView("扫一扫")
-        
-//        self.backColor = UIColor(hexString: "434343")
-//        self.setupPushBackBtn(true)
     }
     
     func createBackBtn() {
@@ -220,9 +207,10 @@ class TwoDimensionViewController: BaseViewController {
     //MARK:交互事件
     func startSYQRCodeReading() {
         
-        self.lineTimer = NSTimer.eoc_scheduledTimerWithTimeInterval(1.0 / 20, block: {
+        self.lineTimer = NSTimer.scheduledTimerWithTimeInterval(1.0 / 20, repeats: true, block: { (timer) in
             self.animationLine()
-            }, repeats: true)
+        })
+        
         if self.qrSession != nil {
             self.qrSession.startRunning()
         }
